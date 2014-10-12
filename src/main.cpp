@@ -2832,7 +2832,7 @@ bool InitBlockIndex() {
     if (!fReindex) {
         // Genesis block
 
-        const char* pszTimestamp = "18/07/2014 - Rosetta heads for space Rubber Duck";
+        const char* pszTimestamp = "12/10/2014 - Rosetta heads for space Rubber Duck";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -2846,13 +2846,13 @@ bool InitBlockIndex() {
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1405688500;
+        block.nTime    = 1413085720;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
         block.nNonce   = 1494132;
 
         if (fTestNet)
         {
-            block.nTime    = 1404645149;
+            block.nTime    = 1413085720;
             block.nNonce   = 1020189;
         }
 
