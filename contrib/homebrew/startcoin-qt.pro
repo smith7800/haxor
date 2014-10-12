@@ -1,7 +1,7 @@
-diff --git a/startcoin-qt.pro b/startcoin-qt.pro
+diff --git a/haxor-qt.pro b/haxor-qt.pro
 index d938c07..e1dd4ec 100644
---- a/startcoin-qt.pro
-+++ b/startcoin-qt.pro
+--- a/haxor-qt.pro
++++ b/haxor-qt.pro
 @@ -353,7 +353,7 @@
  }
  

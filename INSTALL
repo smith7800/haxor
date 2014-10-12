@@ -1,9 +1,9 @@
-Building StartCOIN
+Building haxor
 
-See doc/readme-qt.rst for instructions on building StartCOIN-Qt,
+See doc/readme-qt.rst for instructions on building haxor-Qt,
 the intended-for-end-users, nice-graphical-interface, reference
-implementation of StartCOIN.
+implementation of haxor.
 
-See doc/build-*.txt for instructions on building startcoind,
+See doc/build-*.txt for instructions on building haxord,
 the intended-for-services, no-graphical-interface, reference
-implementation of StartCOIN.
+implementation of haxor.

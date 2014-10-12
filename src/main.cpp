@@ -35,7 +35,7 @@ unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
 uint256 hashGenesisBlock("0x00000bb6b5dcf5e81dee7f18ebd51055228d5fb3e41cc62f4034488f8eaf4448");
-static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // StartCOIN: starting difficulty is 1 / 2^12
+static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // haxor: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 uint256 nBestChainWork = 0;
@@ -67,7 +67,7 @@ map<uint256, set<uint256> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "StartCOIN Signed Message:\n";
+const string strMessageMagic = "haxor Signed Message:\n";
 
 double dHashesPerSec = 0.0;
 int64 nHPSTimerStart = 0;
@@ -358,7 +358,7 @@ unsigned int LimitOrphanTxSize(unsigned int nMaxOrphans)
 
 bool CTxOut::IsDust() const
 {
-    // StartCOIN: IsDust() detection disabled, allows any valid dust to be relayed.
+    // haxor: IsDust() detection disabled, allows any valid dust to be relayed.
     // The fees imposed on each dust txo is considered sufficient spam deterrant. 
     return false;
 }
@@ -615,7 +615,7 @@ int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
             nMinFee = 0;
     }
 
-    // StartCOIN
+    // haxor
     // To limit dust spam, add nBaseFee for each output less than DUST_SOFT_LIMIT
     BOOST_FOREACH(const CTxOut& txout, vout)
         if (txout.nValue < DUST_SOFT_LIMIT)
@@ -1105,7 +1105,7 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 60; // StartCOIN: 1 minute
+static const int64 nTargetTimespan = 60; // haxor: 1 minute
 static const int64 nTargetSpacing = 60; // 1 minute
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
@@ -2136,7 +2136,7 @@ bool CBlock::CheckBlock(CValidationState &state, bool fCheckPOW, bool fCheckMerk
     if (vtx.empty() || vtx.size() > MAX_BLOCK_SIZE || ::GetSerializeSize(*this, SER_NETWORK, PROTOCOL_VERSION) > MAX_BLOCK_SIZE)
         return state.DoS(100, error("CheckBlock() : size limits failed"));
 
-    // StartCOIN: Special short-term limits to avoid 10,000 BDB lock limit:
+    // haxor: Special short-term limits to avoid 10,000 BDB lock limit:
     if (GetBlockTime() < 1376568000)  // stop enforcing 15 August 2013 00:00:00
     {
         // Rule is: #unique txids referenced <= 4,500
@@ -2306,7 +2306,7 @@ bool CBlock::AcceptBlock(CValidationState &state, CDiskBlockPos *dbp)
 
 bool CBlockIndex::IsSuperMajority(int minVersion, const CBlockIndex* pstart, unsigned int nRequired, unsigned int nToCheck)
 {
-    // StartCOIN: temporarily disable v2 block lockin until we are ready for v2 transition
+    // haxor: temporarily disable v2 block lockin until we are ready for v2 transition
     return false;
     unsigned int nFound = 0;
     for (unsigned int i = 0; i < nToCheck && nFound < nRequired && pstart != NULL; i++)
@@ -2805,7 +2805,7 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0xc4;
         pchMessageStart[2] = 0xb9;
         pchMessageStart[3] = 0xde;
-        hashGenesisBlock = uint256("0x000000344d8f4c75001f0fda455567ec2dd0b7ee1d19cf45d6e3fa15472055b1c");
+        hashGenesisBlock = uint256("0x00000eba6eedd481e999abd446830bf66ffea9bc4651c2abd930bb9758fabd40");
     }
 
     //
@@ -2848,12 +2848,12 @@ bool InitBlockIndex() {
         block.nVersion = 1;
         block.nTime    = 1413085720;
         block.nBits    = bnProofOfWorkLimit.GetCompact();
-        block.nNonce   = 1494132;
+        block.nNonce   = 1226862;
 
         if (fTestNet)
         {
             block.nTime    = 1413085720;
-            block.nNonce   = 1020189;
+            block.nNonce   = 1226862;
         }
 
         //// debug print
@@ -2863,7 +2863,7 @@ bool InitBlockIndex() {
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
 
         // Merkle root
-        assert(block.hashMerkleRoot == uint256("0xb7828a1f391aa44b1d63cc5aecf80ba6f23f8018dcc136e4dca1859e105f9a87"));
+        assert(block.hashMerkleRoot == uint256("0x8f57b8b628b2ee99be6c1ed2b5b6996471a6020a0678a8ccb32736b05787fa90"));
 
         // Set to true to generate a new Genesis block
         if (false && block.GetHash() != hashGenesisBlock)
@@ -4253,7 +4253,7 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// StartCOINMiner
+// haxorMiner
 //
 
 int static FormatHashBlocks(void* pbuffer, unsigned int len)
@@ -4666,7 +4666,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         return false;
 
     //// debug print
-    printf("StartCOINMiner:\n");
+    printf("haxorMiner:\n");
     printf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex().c_str(), hashTarget.GetHex().c_str());
     pblock->print();
     printf("generated %s\n", FormatMoney(pblock->vtx[0].vout[0].nValue).c_str());
@@ -4675,7 +4675,7 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     {
         LOCK(cs_main);
         if (pblock->hashPrevBlock != hashBestChain)
-            return error("StartCOINMiner : generated block is stale");
+            return error("haxorMiner : generated block is stale");
 
         // Remove key from key pool
         reservekey.KeepKey();
@@ -4689,17 +4689,17 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         // Process this block the same as if we had received it from another node
         CValidationState state;
         if (!ProcessBlock(state, NULL, pblock))
-            return error("StartCOINMiner : ProcessBlock, block not accepted");
+            return error("haxorMiner : ProcessBlock, block not accepted");
     }
 
     return true;
 }
 
-void static StartCOINMiner(CWallet *pwallet)
+void static haxorMiner(CWallet *pwallet)
 {
-    printf("StartCOINMiner started\n");
+    printf("haxorMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("startcoin-miner");
+    RenameThread("haxor-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
@@ -4721,7 +4721,7 @@ void static StartCOINMiner(CWallet *pwallet)
         CBlock *pblock = &pblocktemplate->block;
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-        printf("Running StartCOINMiner with %"PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
+        printf("Running haxorMiner with %"PRIszu" transactions in block (%u bytes)\n", pblock->vtx.size(),
                ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
         //
@@ -4819,7 +4819,7 @@ void static StartCOINMiner(CWallet *pwallet)
     } }
     catch (boost::thread_interrupted)
     {
-        printf("StartCOINMiner terminated\n");
+        printf("haxorMiner terminated\n");
         throw;
     }
 }
@@ -4844,7 +4844,7 @@ void GenerateBitcoins(bool fGenerate, CWallet* pwallet)
 
     minerThreads = new boost::thread_group();
     for (int i = 0; i < nThreads; i++)
-        minerThreads->create_thread(boost::bind(&StartCOINMiner, pwallet));
+        minerThreads->create_thread(boost::bind(&haxorMiner, pwallet));
 }
 
 // Amount compression:

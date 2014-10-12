@@ -1,7 +1,7 @@
-StartCOIN [START] Technical Details
+haxor [START] Technical Details
 ===================================
 
-This document outlines the technical implementation details for StartCOIN. It should be of use to advanced users and developers.
+This document outlines the technical implementation details for haxor. It should be of use to advanced users and developers.
 
 Specifications
 --------------
@@ -16,7 +16,7 @@ Specifications
 Port numbers
 ------------
 
-The following port numbers are used by StartCOIN.
+The following port numbers are used by haxor.
 
 * P2P uses port 9247 (19247 on Testnet)
 * RPC uses port 99347 (19347 on Testnet)
@@ -24,7 +24,7 @@ The following port numbers are used by StartCOIN.
 Message start string
 --------------------
 
-The message start string used by StartCOIN is:
+The message start string used by haxor is:
 
 ```
 0xff, 0xc4, 0xba, 0xdf
